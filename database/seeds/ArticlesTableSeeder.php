@@ -22,7 +22,7 @@ class ArticlesTableSeeder extends Seeder
         for ($i = 1; $i <= 30; $i++) {
             //using faker and random numbers to generate dummy data
             DB::table('articles')->insert([
-                'uuid' => (string)Str::uuid(),
+                'id' => (string)Str::uuid(),
                 'name' => $faker->sentence(),
                 'description' => implode($faker->paragraphs(5)),
                 'code' => "" . random_int(10, 99),

@@ -18,7 +18,7 @@ class ArticleController extends Controller
     public function index()
     {
         //Get articles
-        $article = Article::paginate(5);
+        $article = Article::orderBy('created_at', 'desc')->paginate(5);
 
         //Return the collection of articles as a resource
         return ArticleResource::collection($article);
@@ -36,16 +36,18 @@ class ArticleController extends Controller
     {
         $status= array("active","inactive");
         $article = $request->isMethod('put') ? Article::findOrFail($request->article_id) : new Article;
-
-        $article->id = $request->input('article_id');
+        
+        if($article->code==null){
+            $article->id = (string)Str::uuid();
+            $article->code="" . random_int(10, 99);
+        }
+        else{
+            $article->id = $request->input('article_id');
+        }
         $article->name = $request->input('name');
         $article->description = $request->input('description');
         $article->status=$request->input('status');
-        if($article->uuid==null){
-        $article->uuid=(string)Str::uuid();
-        $article->code="" . random_int(10, 99);
         
-        }
         
 
         if ($article->save()) {
