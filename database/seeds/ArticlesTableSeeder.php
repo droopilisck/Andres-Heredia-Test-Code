@@ -11,26 +11,25 @@ class ArticlesTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
+     * The class uses a Faker instance that generate dummy data.
      *
      * @return void
      */
     public function run()
     {
-        //calling a Faker instance
+
         $faker = Faker::create('App\Article');
-        $status= array("active","inactive");
+        $statusArray= array("active","inactive");
         for ($i = 1; $i <= 30; $i++) {
-            //using faker and random numbers to generate dummy data
             DB::table('articles')->insert([
                 'id' => (string)Str::uuid(),
                 'name' => $faker->sentence(),
                 'description' => implode($faker->paragraphs(5)),
                 'code' => "" . random_int(10, 99),
-                'status'=>$status[(random_int(0, 1))],
+                'status'=>$statusArray[(random_int(0, 1))],
                 'created_at' => \Carbon\Carbon::now(),
                 'updated_at' => \Carbon\Carbon::now(),
             ]);
         }
-
     }
 }

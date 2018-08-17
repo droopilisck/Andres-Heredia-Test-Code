@@ -15,7 +15,11 @@ class CreateArticlesTable extends Migration
      */
     public function up()
     {
-        //Declaring table sctructure for main use in the database
+        /**
+         * Declaring table sctructure for main use in the database.
+         *
+         */
+        
         Schema::create('articles', function (Blueprint $table) {
             //$table->increments('id');
             $table->uuid('id');

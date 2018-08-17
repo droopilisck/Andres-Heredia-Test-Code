@@ -12,5 +12,5 @@ class Article extends Model
      * @var bool
      */
     public $incrementing = false;
-    protected $fillable = ['name', 'description'];
+    protected $fillable = ['name', 'description', 'status'];
 }
