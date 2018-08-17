@@ -2,10 +2,14 @@
 
 namespace App;
 
+use Laravel\Passport\HasApiTokens;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable; 
 
-class Article extends Model
+class Article extends Authenticatable
 {
+    use HasApiTokens;
+
     /**
      * Indicates if the IDs are auto-incrementing.
      *
