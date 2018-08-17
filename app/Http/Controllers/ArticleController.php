@@ -18,13 +18,11 @@ class ArticleController extends Controller
     public function index()
     {
         //Get articles
-        $article = Article::paginate(5);
+        $articles = Article::orderBy('created_at', 'desc')->paginate(5);
 
         //Return the collection of articles as a resource
-        return ArticleResource::collection($article);
+        return ArticleResource::collection($articles);
     }
-
-
 
     /**
      * Store a newly created resource in storage.
@@ -32,22 +30,24 @@ class ArticleController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+
     public function store(Request $request)
     {
         $status= array("active","inactive");
-        $article = $request->isMethod('put') ? Article::findOrFail($request->article_id) : new Article;
-
-        $article->id = $request->input('article_id');
+        $article = $request->isMethod('put') ? 
+        Article::findOrFail($request->article_id) : new Article;
+        
+        if ($article->code==null) {
+            $article->id = (string)Str::uuid();
+            $article->code="" . random_int(10, 99);
+        }
+        else {
+            $article->id = $request->input('article_id');
+        }
         $article->name = $request->input('name');
         $article->description = $request->input('description');
         $article->status=$request->input('status');
-        if($article->uuid==null){
-        $article->uuid=(string)Str::uuid();
-        $article->code="" . random_int(10, 99);
         
-        }
-        
-
         if ($article->save()) {
             return new ArticleResource($article);
         }
@@ -59,6 +59,7 @@ class ArticleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+
     public function show($id)
     {
         //get a single article
@@ -67,9 +68,6 @@ class ArticleController extends Controller
         //Return single article as a resource
         return new ArticleResource($article);
     }
-
-    
-
 
     /**
      * Remove the specified resource from storage.

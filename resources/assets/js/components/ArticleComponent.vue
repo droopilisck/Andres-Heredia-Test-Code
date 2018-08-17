@@ -149,7 +149,11 @@ export default {
             'content-type': 'application/json'
           }
         })
-        .then(res=> res.json())
+        .then(res=> {
+          res.json(); 
+          console.log(res.json);
+          
+        })
         .then(data=>{
           this.article.name = "";
             this.article.description = "";
