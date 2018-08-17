@@ -18,17 +18,17 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 //List articles
-Route::get('articles', 'ArticleController@index');
+Route::middleware('auth:api')->get('articles', 'ArticleController@index');
 
 //List single article
-Route::get('article/{id}', 'ArticleController@show');
+Route::middleware('auth:api')->get('article/{id}', 'ArticleController@show');
 
 //Create new Article
 
-Route::post('article', 'ArticleController@store');
+Route::middleware('auth:api')->post('article', 'ArticleController@store');
 
 //Update Article
-Route::put('article', 'ArticleController@store');
+Route::middleware('auth:api')->put('article', 'ArticleController@store');
 
 //Delete Article
-Route::delete('article/{id}', 'ArticleController@destroy');
+Route::middleware('auth:api')->delete('article/{id}', 'ArticleController@destroy');

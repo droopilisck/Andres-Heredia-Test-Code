@@ -53,7 +53,7 @@ class ArticleController extends Controller
 
         $validator = Validator::make($request->all(), [
             'name' => 'min:5|max:200', // token length should be 100 chars
-            'description' => 'min:5|max:255',
+            'description' => 'min:5|max:1000',
         ]);
         
         if ($validator->fails()) {
