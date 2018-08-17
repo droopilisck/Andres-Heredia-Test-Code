@@ -64660,46 +64660,54 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         // Add
         console.log("attempting to POST....");
 
-        this.article.id = "";
-        fetch('api/article', {
-          method: 'post',
-          body: JSON.stringify({
-            id: "",
-            name: this.article.name,
-            description: this.article.description,
-            status: this.article.status
-          }),
-          headers: {
-            'content-type': 'application/json'
-          }
+        // this.article.id= "";
+        // fetch('api/article', {
+        //   method: 'post',
+        //   body: JSON.stringify({
+        //     id: "",
+        // name: this.article.name,
+        // description: this.article.description,
+        // status: this.article.status
+        //   }),
+        //   headers: {
+        //     'content-type': 'application/json'
+        //   }
+        // })
+        // .then(res=> {
+        //   //res.json(); 
+        //   console.log(res);
+
+        // })
+        // .then(data=>{
+        //   this.article.name = "";
+        //     this.article.description = "";
+        //     this.article.status = "inactive";
+        //     alert("Article Added");
+        //     this.fetchArticles();
+        // })
+        // .catch(function(error) {
+        //     console.log(error);
+        //   });
+
+
+        axios.post("api/article", {
+          id: "",
+          name: this.article.name,
+          description: this.article.description,
+          status: this.article.status
         }).then(function (res) {
-          res.json();
-          console.log(res.json);
-        }).then(function (data) {
+          console.log(res);
+
           _this3.article.name = "";
           _this3.article.description = "";
           _this3.article.status = "inactive";
+
           alert("Article Added");
           _this3.fetchArticles();
         }).catch(function (error) {
           console.log(error);
+          alert("Article format Invalid");
         });
-
-        // axios
-        //   .post("api/article", this.article)
-        //   .catch(function(error) {
-        //     console.log(error);
-        //   })
-        //   .then(res => {
-        //     console.log(res);
-
-        //     this.article.name = "";
-        //     this.article.description = "";
-        //     this.article.status = "inactive";
-
-        //     alert("Article Added");
-        //     this.fetchArticles();
-        //   });
       } else {
         axios.put("api/article", this.article).then(function (res) {
           console.log(res);
@@ -64712,6 +64720,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
           _this3.fetchArticles();
         }).catch(function (error) {
           console.log(error);
+          alert("Article format Invalid");
         });
       }
       this.hideModal();

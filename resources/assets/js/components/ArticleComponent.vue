@@ -136,51 +136,57 @@ export default {
         // Add
         console.log("attempting to POST....");
         
-        this.article.id= "";
-        fetch('api/article', {
-          method: 'post',
-          body: JSON.stringify({
+        // this.article.id= "";
+        // fetch('api/article', {
+        //   method: 'post',
+        //   body: JSON.stringify({
+        //     id: "",
+        // name: this.article.name,
+        // description: this.article.description,
+        // status: this.article.status
+        //   }),
+        //   headers: {
+        //     'content-type': 'application/json'
+        //   }
+        // })
+        // .then(res=> {
+        //   //res.json(); 
+        //   console.log(res);
+          
+        // })
+        // .then(data=>{
+        //   this.article.name = "";
+        //     this.article.description = "";
+        //     this.article.status = "inactive";
+        //     alert("Article Added");
+        //     this.fetchArticles();
+        // })
+        // .catch(function(error) {
+        //     console.log(error);
+        //   });
+
+
+        axios
+          .post("api/article", {
             id: "",
         name: this.article.name,
         description: this.article.description,
         status: this.article.status
-          }),
-          headers: {
-            'content-type': 'application/json'
-          }
-        })
-        .then(res=> {
-          res.json(); 
-          console.log(res.json);
-          
-        })
-        .then(data=>{
-          this.article.name = "";
+          })
+          .then(res => {
+            console.log(res);
+
+            this.article.name = "";
             this.article.description = "";
             this.article.status = "inactive";
+
             alert("Article Added");
             this.fetchArticles();
-        })
-        .catch(function(error) {
+          })
+          .catch(function(error) {
             console.log(error);
+            alert("Article format Invalid");
           });
-
-
-        // axios
-        //   .post("api/article", this.article)
-        //   .catch(function(error) {
-        //     console.log(error);
-        //   })
-        //   .then(res => {
-        //     console.log(res);
-
-        //     this.article.name = "";
-        //     this.article.description = "";
-        //     this.article.status = "inactive";
-
-        //     alert("Article Added");
-        //     this.fetchArticles();
-        //   });
       } else {
         axios
           .put("api/article", this.article)
@@ -196,6 +202,7 @@ export default {
           })
           .catch(function(error) {
             console.log(error);
+            alert("Article format Invalid");
           });
       }
       this.hideModal();

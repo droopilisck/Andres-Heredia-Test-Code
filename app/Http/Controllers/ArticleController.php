@@ -7,6 +7,7 @@ use App\Http\Requests;
 use App\Article;
 use App\Http\Resources\Article as ArticleResource;
 use Illuminate\Support\Str;
+use Validator;
 
 class ArticleController extends Controller
 {
@@ -21,7 +22,9 @@ class ArticleController extends Controller
         $articles = Article::orderBy('created_at', 'desc')->paginate(5);
 
         //Return the collection of articles as a resource
+        //throw new ValidationException ("Mensaje de prueba");
         return ArticleResource::collection($articles);
+        
     }
 
     /**
@@ -47,10 +50,25 @@ class ArticleController extends Controller
         $article->name = $request->input('name');
         $article->description = $request->input('description');
         $article->status=$request->input('status');
+
+        $validator = Validator::make($request->all(), [
+            'name' => 'min:5|max:200', // token length should be 100 chars
+            'description' => 'min:5|max:255',
+        ]);
         
-        if ($article->save()) {
-            return new ArticleResource($article);
+        if ($validator->fails()) {
+            //var_dump($validator->errors()->all());
+            return response();
+
         }
+        else {
+            //$this->assertTrue(true);
+            if ($article->save()) {
+                return new ArticleResource($article);
+            }
+        }
+
+        
     }
 
     /**

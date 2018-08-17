@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use Tests\TestCase;
+use Validator;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\WithFaker;
 use Faker\Factory as Faker;
@@ -34,14 +35,15 @@ class ApiRequestsTest extends TestCase
         DB::table('articles')->insert([
             'id' => '503bee2e-f068-45e4-8e4f-7ca13bcff533',
             'name' => 'Test Name',
-            'description' => 'Test Description',
+            'description' => 'Test Desc',
             'code' => "" . random_int(10, 99),
             'status' => $statusArray[(random_int(0, 1))],
             'created_at' => \Carbon\Carbon::now(),
             'updated_at' => \Carbon\Carbon::now(),
         ]);
 
-        $response = $this->call('GET', 'api/articles');
+        $response = $this->call('GET', 'api/article/503bee2e-f068-45e4-8e4f-7ca13bcff533');
+
         $this->assertContains("Test Name", $response->getContent());
     }
 
