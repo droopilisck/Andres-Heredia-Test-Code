@@ -64843,21 +64843,39 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       },
       article_id: "",
       pagination: {},
-      edit: false
+      edit: false,
+      token: "",
+      config: ""
     };
   },
   created: function created() {
+    this.getToken();
     this.fetchArticles();
   },
 
   methods: {
-    fetchArticles: function fetchArticles(page_url) {
+    getToken: function getToken() {
       var _this = this;
+
+      axios.post("api/auth/login", {
+        email: 'ahguerra93@gmail.com',
+        password: 'secret'
+      }).then(function (res) {
+
+        _this.token = res.data.access_token;
+        console.log(_this.token);
+        _this.config = {
+          headers: { 'Authorization': "bearer " + _this.token }
+        };
+      });
+    },
+    fetchArticles: function fetchArticles(page_url) {
+      var _this2 = this;
 
       var vm = this;
       page_url = page_url || "/api/articles";
       axios.get(page_url).then(function (res) {
-        _this.articles = res.data.data;
+        _this2.articles = res.data.data;
         vm.makePagination(res.data.meta, res.data.links);
       }).catch(function (err) {
         return console.log(err);
@@ -64874,20 +64892,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       this.pagination = pagination;
     },
     deleteArticle: function deleteArticle(id) {
-      var _this2 = this;
+      var _this3 = this;
 
       if (confirm("Are You Sure?")) {
-        axios.delete("api/article/" + id).then(function (res) {
+        axios.delete("api/article/" + id, this.config).then(function (res) {
           console.log(res);
           alert("Article Removed");
-          _this2.fetchArticles();
+          _this3.fetchArticles();
         }).catch(function (err) {
           return console.log(err);
         });
       }
     },
     addArticle: function addArticle() {
-      var _this3 = this;
+      var _this4 = this;
 
       if (this.edit === false) {
         // Add
@@ -64898,29 +64916,29 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
           name: this.article.name,
           description: this.article.description,
           status: this.article.status
-        }).then(function (res) {
+        }, this.config).then(function (res) {
           console.log(res);
 
-          _this3.article.name = "";
-          _this3.article.description = "";
-          _this3.article.status = "inactive";
+          _this4.article.name = "";
+          _this4.article.description = "";
+          _this4.article.status = "inactive";
 
           alert("Article Added");
-          _this3.fetchArticles();
+          _this4.fetchArticles();
         }).catch(function (error) {
           console.log(error);
           alert("Article format Invalid");
         });
       } else {
-        axios.put("api/article", this.article).then(function (res) {
+        axios.put("api/article", this.article, this.config).then(function (res) {
           console.log(res);
 
-          _this3.article.name = "";
-          _this3.article.description = "";
-          _this3.article.status = "inactive";
-          _this3.edit = false;
+          _this4.article.name = "";
+          _this4.article.description = "";
+          _this4.article.status = "inactive";
+          _this4.edit = false;
           alert("Article Updated");
-          _this3.fetchArticles();
+          _this4.fetchArticles();
         }).catch(function (error) {
           console.log(error);
           alert("Article format Invalid");
