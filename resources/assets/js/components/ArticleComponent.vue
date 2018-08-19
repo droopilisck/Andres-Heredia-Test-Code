@@ -91,13 +91,30 @@ export default {
       },
       article_id: "",
       pagination: {},
-      edit: false
+      edit: false,
+      token: "",
+      config: ""  
     };
   },
   created() {
+    this.getToken();
     this.fetchArticles();
   },
   methods: {
+    getToken(){
+      axios
+      .post("api/auth/login", {
+        email: 'ahguerra93@gmail.com', 
+        password: 'secret'
+        }).then(res=>{
+          
+          this.token = res.data.access_token;
+          console.log(this.token);
+          this.config = {
+              headers: {'Authorization': "bearer " + this.token}
+          }
+        });
+    },
     fetchArticles(page_url) {
       let vm = this;
       page_url = page_url || "/api/articles";
@@ -122,7 +139,7 @@ export default {
     deleteArticle(id) {
       if (confirm("Are You Sure?")) {
         axios
-          .delete(`api/article/${id}`)
+          .delete(`api/article/${id}`, this.config)
           .then(res => {
             console.log(res);
             alert("Article Removed");
@@ -142,7 +159,7 @@ export default {
         name: this.article.name,
         description: this.article.description,
         status: this.article.status
-          })
+          }, this.config)
           .then(res => {
             console.log(res);
 
@@ -159,7 +176,7 @@ export default {
           });
       } else {
         axios
-          .put("api/article", this.article)
+          .put("api/article", this.article, this.config)
           .then(res => {
             console.log(res);
 
