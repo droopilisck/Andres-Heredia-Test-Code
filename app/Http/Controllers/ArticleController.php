@@ -6,11 +6,17 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Article;
 use App\Http\Resources\Article as ArticleResource;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Validator;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class ArticleController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:api', ['except' => ['index']]);
+    }
     /**
      * Display a listing of the resource.
      *

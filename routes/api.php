@@ -17,18 +17,33 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+
 //List articles
-Route::middleware('auth:api')->get('articles', 'ArticleController@index');
+Route::get('articles', 'ArticleController@index');
 
 //List single article
-Route::middleware('auth:api')->get('article/{id}', 'ArticleController@show');
+Route::get('article/{id}', 'ArticleController@show');
 
 //Create new Article
 
-Route::middleware('auth:api')->post('article', 'ArticleController@store');
+Route::post('article', 'ArticleController@store');
 
 //Update Article
-Route::middleware('auth:api')->put('article', 'ArticleController@store');
+Route::put('article', 'ArticleController@store');
 
 //Delete Article
-Route::middleware('auth:api')->delete('article/{id}', 'ArticleController@destroy');
+Route::delete('article/{id}', 'ArticleController@destroy');
+
+Route::group([
+
+    'prefix' => 'auth'
+
+], function () {
+
+
+    Route::post('login', 'AuthController@login');
+    Route::post('logout', 'AuthController@logout');
+    Route::post('refresh', 'AuthController@refresh');
+    Route::post('me', 'AuthController@me');
+
+});
