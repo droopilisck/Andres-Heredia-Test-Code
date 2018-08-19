@@ -5,6 +5,15 @@ CRUD Application Using Laravel, VueJS, Bootstrap-Vue and Axios
 # Install Dependencies
 composer install
 
+# Install UUID
+composer require webpatser/laravel-uuid
+
+# Install JWT for API protection
+composer require tymon/jwt-auth
+
+#Generate a jwt key
+php artisan jwt:secret
+
 # Run Migrations
 php artisan migrate
 
